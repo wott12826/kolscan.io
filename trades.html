@@ -304,7 +304,7 @@
                     <div>Price</div>
                     <div>Time</div>
                 </div>
-                <div id="trades-list">Loading...</div>
+                <div id="trades-list"></div>
             </div>
         </main>
     </div>
@@ -312,19 +312,37 @@
     <script>
         function timeAgo(timestamp) {
             const seconds = Math.floor((Date.now() / 1000) - timestamp);
-            const intervals = [
-                { label: 'y', seconds: 31536000 },
-                { label: 'mo', seconds: 2592000 },
-                { label: 'd', seconds: 86400 },
-                { label: 'h', seconds: 3600 },
-                { label: 'm', seconds: 60 },
-                { label: 's', seconds: 1 }
-            ];
-            for (const i of intervals) {
-                const count = Math.floor(seconds / i.seconds);
-                if (count > 0) return `${count}${i.label} ago`;
+            
+            if (seconds < 5) {
+                return 'just now';
             }
-            return 'now';
+            
+            if (seconds < 60) {
+                return `${seconds} sec ago`;
+            }
+            
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) {
+                return `${minutes} min ago`;
+            }
+            
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) {
+                return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+            }
+            
+            const days = Math.floor(hours / 24);
+            if (days < 30) {
+                return `${days} day${days === 1 ? '' : 's'} ago`;
+            }
+            
+            const months = Math.floor(days / 30);
+            if (months < 12) {
+                return `${months} month${months === 1 ? '' : 's'} ago`;
+            }
+            
+            const years = Math.floor(months / 12);
+            return `${years} year${years === 1 ? '' : 's'} ago`;
         }
 
         function formatSolAmount(amount) {
@@ -354,7 +372,7 @@
             row.innerHTML = `
                 <div class="wallet-address">
                     <div class="wallet-icon"></div>
-                    <span>${trade.wallet || 'Unknown'}</span>
+                    <span style="pointer-events: none;">${trade.wallet || 'Unknown'}</span>
                 </div>
                 <div class="trade-amount ${amountClass}">
                     ${amountPrefix}${sanitizePrefix(amountValue)} SOL
@@ -370,11 +388,7 @@
                 </div>
                 <div class="trade-time">${timeAgo(trade.timestamp || Date.now()/1000)}</div>
             `;
-            row.addEventListener('click', () => {
-                if (trade.signature) {
-                    window.open(`https://dexscreener.com/solana/${trade.signature}`, '_blank');
-                }
-            });
+           
             return row;
         }
 
@@ -400,12 +414,12 @@
                 },
                 { 
                     symbol: 'BONK', 
-                    icon: 'https://cryptologos.cc/logos/bonk1-bonk-logo.png?v=040',
+                    icon: 'https://play-lh.googleusercontent.com/K1_CSjHxDMmt4VTmmzfwrLeKb06YFs7j4ihCBODWJ4hKldifuFxotPA5hy_O01I7xs4',
                     dex: 'Bonk'
                 },
                 { 
                     symbol: 'JUP', 
-                    icon: 'https://cryptologos.cc/logos/jupiter-ag-jup-logo.png?v=040',
+                    icon: 'https://static1.tokenterminal.com//jupiter/logo.png?logo_hash=6745b324c298242676b7eab38db2c28901075b4f',
                     dex: 'Jupiter'
                 },
                 { 
@@ -447,6 +461,16 @@
                 const tradesList = document.getElementById('trades-list');
                 
                 if (SIMULATION_CONFIG.enabled) {
+                    // Update timestamps for existing trades
+                    const existingRows = tradesList.querySelectorAll('.trade-row');
+                    existingRows.forEach(row => {
+                        const timeElement = row.querySelector('.trade-time');
+                        const timestamp = parseInt(row.dataset.timestamp);
+                        if (timestamp) {
+                            timeElement.textContent = timeAgo(timestamp);
+                        }
+                    });
+
                     // Generate new trade
                     const newTrade = generateRandomTrade();
                     
@@ -457,6 +481,7 @@
 
                     // Create and add new trade row
                     const row = createTradeRow(newTrade);
+                    row.dataset.timestamp = newTrade.timestamp;
                     tradesList.prepend(row);
 
                     // Add signature to tracking set

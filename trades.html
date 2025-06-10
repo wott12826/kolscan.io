@@ -1,89 +1,49 @@
 ﻿<!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="_next/static/css/fomo-theme.css">
+    <link rel="icon" type="image/png" href="images/fomologo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <title>Live Trades - Kolscan</title>
-    <meta name="description" content="Track live memecoin trades in real-time. Never miss a trade again.">
-</head>
-
-<body>
-    <div class="layoutContainer">
-        <header class="header glass-effect">
-            <div class="header-content">
-                <a href="index.htm" class="logo">
-                    <span class="text-gradient" style="font-size: 24px; font-weight: 700;">Kolscan</span>
-                </a>
-                
-                <div class="price-container card">
-                    <img src="images/Solana.webp" alt="sol" width="20" height="20">
-                    <h2>$160.61</h2>
-                </div>
-
-                <nav class="nav-links">
-                    <a href="trades.html" class="nav-link active">Trades</a>
-                    <a href="tokens.html" class="nav-link">Tokens</a>
-                    <a href="leaderboard.html" class="nav-link">Leaderboard</a>
-                </nav>
-
-                <div class="header-actions">
-                    <button class="btn connect-wallet">
-                        Connect Wallet
-                    </button>
-                    <button class="btn settings-btn">
-                        <img src="images/Settings.webp" alt="Settings" width="24" height="24">
-                    </button>
-                </div>
-            </div>
-        </header>
-
-        <main class="main-content">
-            <section class="trades-section">
-                <div class="section-header">
-                    <h1 class="section-title">Live Trades</h1>
-                    <div class="filters card">
-                        <button class="btn filter-btn active">All</button>
-                        <button class="btn filter-btn">Buys</button>
-                        <button class="btn filter-btn">Sells</button>
-                        <button class="btn filter-btn">Top Traders</button>
-                    </div>
-                </div>
-
-                <div class="trades-grid">
-                    <div class="trade-card card">
-                        <div class="trade-header">
-                            <img src="profiles/3h65MmPZksoKKyEpEjnWU2Yk2iYT5oZDNitGy5cTaxoE.png" alt="trader" class="trader-avatar">
-                            <div class="trader-info">
-                                <span class="trader-name">Jidn</span>
-                                <span class="trader-rank">#1 Trader</span>
-                            </div>
-                        </div>
-                        <div class="trade-details">
-                            <div class="trade-action buy">
-                                <span class="action-label">Bought</span>
-                                <span class="amount">0.069 SOL</span>
-                            </div>
-                            <div class="trade-token">
-                                <span class="token-name">Meme+</span>
-                                <span class="token-price">$0.000014</span>
-                            </div>
-                        </div>
-                        <div class="trade-footer">
-                            <a href="#" class="time-link">5s ago</a>
-                            <a href="#" class="tx-link">View TX</a>
-                        </div>
-                    </div>
-                    <!-- More trade cards... -->
-                </div>
-            </section>
-        </main>
-    </div>
-
+    <title>Fomo - Live Trades</title>
+    <meta name="description" content="Track live trades from top wallets in real-time.">
     <style>
+        :root {
+            --primary: #4D00FF;
+            --white: #FFFFFF;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --radius-sm: 0.5rem;
+            --radius-md: 1rem;
+            --radius-lg: 1.5rem;
+            --radius-full: 9999px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary);
+            color: var(--white);
+            line-height: 1.5;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         .header {
             position: fixed;
             top: 0;
@@ -101,9 +61,29 @@
             gap: var(--spacing-xl);
         }
 
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+        }
+
         .nav-links {
             display: flex;
             gap: var(--spacing-md);
+        }
+
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
         }
 
         .header-actions {
@@ -112,117 +92,102 @@
             gap: var(--spacing-md);
         }
 
+        .btn {
+            background: var(--white);
+            color: var(--primary);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
         .main-content {
             max-width: 1200px;
-            margin: 100px auto 0;
+            margin: 120px auto 0;
             padding: var(--spacing-xl);
         }
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--spacing-xl);
+        .trades-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
         }
 
-        .filters {
-            display: flex;
-            gap: var(--spacing-sm);
-            padding: var(--spacing-sm);
-        }
-
-        .filter-btn {
-            background: transparent;
-            border: 1px solid var(--border-color);
-        }
-
-        .filter-btn.active {
-            background: var(--fomo-primary);
-            border-color: var(--fomo-primary);
-        }
-
-        .trades-grid {
+        .trades-header {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: var(--spacing-lg);
-        }
-
-        .trade-card {
-            display: flex;
-            flex-direction: column;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
             gap: var(--spacing-md);
+            font-weight: 600;
         }
 
-        .trade-header {
+        .trade-row {
+            padding: var(--spacing-md);
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            gap: var(--spacing-md);
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .trade-row:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.01);
+        }
+
+        .wallet-address {
             display: flex;
             align-items: center;
             gap: var(--spacing-sm);
         }
 
-        .trader-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+        .wallet-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-full);
+            background: rgba(255, 255, 255, 0.1);
         }
 
-        .trader-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .trader-name {
+        .trade-amount {
             font-weight: 600;
         }
 
-        .trader-rank {
-            font-size: 14px;
-            color: var(--fomo-primary);
+        .trade-amount.buy {
+            color: #00FF88;
         }
 
-        .trade-details {
+        .trade-amount.sell {
+            color: #FF4444;
+        }
+
+        .token-info {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: var(--spacing-sm);
         }
 
-        .trade-action {
-            display: flex;
-            flex-direction: column;
+        .token-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: var(--radius-full);
         }
 
-        .action-label {
-            font-size: 14px;
-            opacity: 0.8;
-        }
-
-        .trade-token {
-            text-align: right;
-        }
-
-        .token-name {
-            font-weight: 600;
-        }
-
-        .token-price {
-            font-size: 14px;
-            opacity: 0.8;
-        }
-
-        .trade-footer {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-        }
-
-        .time-link, .tx-link {
-            color: var(--text-color);
-            text-decoration: none;
-            opacity: 0.8;
-            transition: opacity var(--transition-fast);
-        }
-
-        .time-link:hover, .tx-link:hover {
-            opacity: 1;
+        .trade-time {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.875rem;
         }
 
         @media (max-width: 768px) {
@@ -237,17 +202,164 @@
                 margin-top: var(--spacing-md);
             }
 
-            .section-header {
-                flex-direction: column;
-                gap: var(--spacing-md);
+            .trades-header {
+                display: none;
             }
 
-            .filters {
-                width: 100%;
-                overflow-x: auto;
-                padding: var(--spacing-sm);
+            .trade-row {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-sm);
+                padding: var(--spacing-md);
+            }
+
+            .wallet-address {
+                margin-bottom: var(--spacing-xs);
+            }
+
+            .trade-amount {
+                margin-bottom: var(--spacing-xs);
+            }
+
+            .token-info {
+                margin-bottom: var(--spacing-xs);
             }
         }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .new-trade {
+            animation: pulse 0.5s ease-in-out;
+        }
     </style>
+</head>
+
+<body>
+    <div class="layoutContainer">
+        <header class="header glass-effect">
+            <div class="header-content">
+                <a href="index.htm" class="logo">
+                    <img src="images/fomologo.png" alt="Fomo Logo" style="height: 32px; width: auto;">
+                </a>
+                
+                <nav class="nav-links">
+                    <a href="trades.html" class="nav-link">Trades</a>
+                    <a href="tokens.html" class="nav-link">Tokens</a>
+                    <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                </nav>
+
+                <div class="header-actions">
+                    <button class="btn connect-wallet">
+                        Connect Wallet
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <h1 class="text-4xl font-bold text-center mb-8">Live Trades from Top Fomo Wallets</h1>
+
+            <div class="trades-container">
+                <div class="trades-header">
+                    <div>Wallet</div>
+                    <div>Amount</div>
+                    <div>Token</div>
+                    <div>Price</div>
+                    <div>Time</div>
+                </div>
+
+                <div class="trade-row new-trade">
+                    <div class="wallet-address">
+                        <div class="wallet-icon"></div>
+                        <span>0xAb...3eF</span>
+                    </div>
+                    <div class="trade-amount buy">+0.069 SOL</div>
+                    <div class="token-info">
+                        <img src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png" alt="SOL" class="token-icon">
+                        <span>SOL</span>
+                    </div>
+                    <div>$160.61</div>
+                    <div class="trade-time">3m ago</div>
+                </div>
+
+                <div class="trade-row">
+                    <div class="wallet-address">
+                        <div class="wallet-icon"></div>
+                        <span>0xCd...7gH</span>
+                    </div>
+                    <div class="trade-amount sell">-1.5 SOL</div>
+                    <div class="token-info">
+                        <img src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v/logo.png" alt="USDC" class="token-icon">
+                        <span>USDC</span>
+                    </div>
+                    <div>$1.00</div>
+                    <div class="trade-time">5m ago</div>
+                </div>
+
+                <div class="trade-row">
+                    <div class="wallet-address">
+                        <div class="wallet-icon"></div>
+                        <span>0xEf...9iK</span>
+                    </div>
+                    <div class="trade-amount buy">+2.3 SOL</div>
+                    <div class="token-info">
+                        <img src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.png" alt="USDT" class="token-icon">
+                        <span>USDT</span>
+                    </div>
+                    <div>$1.00</div>
+                    <div class="trade-time">8m ago</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Simulate new trades
+        function addNewTrade() {
+            const tradesContainer = document.querySelector('.trades-container');
+            const newTrade = document.createElement('div');
+            newTrade.className = 'trade-row new-trade';
+            newTrade.innerHTML = `
+                <div class="wallet-address">
+                    <div class="wallet-icon"></div>
+                    <span>0x${Math.random().toString(16).slice(2, 6)}...${Math.random().toString(16).slice(2, 6)}</span>
+                </div>
+                <div class="trade-amount ${Math.random() > 0.5 ? 'buy' : 'sell'}">${Math.random() > 0.5 ? '+' : '-'}${(Math.random() * 5).toFixed(2)} SOL</div>
+                <div class="token-info">
+                    <img src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png" alt="SOL" class="token-icon">
+                    <span>SOL</span>
+                </div>
+                <div>$${(Math.random() * 200).toFixed(2)}</div>
+                <div class="trade-time">just now</div>
+            `;
+            tradesContainer.insertBefore(newTrade, tradesContainer.children[1]);
+            
+            // Remove animation class after animation ends
+            setTimeout(() => {
+                newTrade.classList.remove('new-trade');
+            }, 500);
+        }
+
+        // Add new trade every 5 seconds
+        setInterval(addNewTrade, 5000);
+
+        // Add click handler to open Solscan
+        document.querySelectorAll('.trade-row').forEach(row => {
+            row.addEventListener('click', () => {
+                const txId = 'your-transaction-id'; // Replace with actual transaction ID
+                window.open(`https://solscan.io/tx/${txId}`, '_blank');
+            });
+        });
+    </script>
 </body>
+
 </html>

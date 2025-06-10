@@ -4,86 +4,75 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="_next/static/css/fomo-theme.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <title>Kolscan - Track Top Memecoin Traders</title>
+    <link rel="icon" type="image/png" href="images/fomologo.png">
+    <title>Fomo - Track Top Memecoin Traders</title>
     <meta name="description" content="Track the top memecoin traders in real-time. Never miss a trade again.">
-</head>
-
-<body>
-    <div class="layoutContainer">
-        <header class="header glass-effect">
-            <div class="header-content">
-                <a href="index.htm" class="logo">
-                    <span class="text-gradient" style="font-size: 24px; font-weight: 700;">Kolscan</span>
-                </a>
-                
-                <div class="price-container card">
-                    <img src="images/Solana.webp" alt="sol" width="20" height="20">
-                    <h2>$160.61</h2>
-                </div>
-
-                <nav class="nav-links">
-                    <a href="trades.html" class="nav-link">Trades</a>
-                    <a href="tokens.html" class="nav-link">Tokens</a>
-                    <a href="leaderboard.html" class="nav-link">Leaderboard</a>
-                </nav>
-
-                <div class="header-actions">
-                    <button class="btn connect-wallet">
-                        Connect Wallet
-                    </button>
-                    <button class="btn settings-btn">
-                        <img src="images/Settings.webp" alt="Settings" width="24" height="24">
-                    </button>
-                </div>
-            </div>
-        </header>
-
-        <main class="main-content">
-            <section class="hero">
-                <h1 class="hero-title">
-                    Track the Top Memecoin <br>
-                    Traders in <span class="text-gradient pulse">Realtime</span>
-                </h1>
-                
-                <div class="search-container">
-                    <div class="search-wrapper card">
-                        <input type="text" class="input search-input" placeholder="Enter wallet address">
-                        <button class="btn search-btn">
-                            <img src="images/Search2.webp" alt="search" width="24" height="24">
-                        </button>
-                    </div>
-                </div>
-
-                <div class="live-trades">
-                    <h2 class="section-title">Live Trades</h2>
-                    <div class="trades-list">
-                        <div class="trade-card card">
-                            <div class="trade-header">
-                                <img src="profiles/3h65MmPZksoKKyEpEjnWU2Yk2iYT5oZDNitGy5cTaxoE.png" alt="trader" class="trader-avatar">
-                                <span class="trader-name">Jidn</span>
-                            </div>
-                            <div class="trade-details">
-                                <span class="trade-action buy">bought</span>
-                                <span class="trade-amount">0.069 sol (806k)</span>
-                                <span class="trade-token">Meme+</span>
-                                <span class="trade-price">$0.000014</span>
-                            </div>
-                            <div class="trade-time">
-                                <a href="#" class="time-link">5s ago</a>
-                            </div>
-                        </div>
-                        <!-- More trade cards... -->
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
-
     <style>
+        :root {
+            --primary: #4D00FF;
+            --white: #FFFFFF;
+            --bg-dark: #0A0A0A;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --radius-sm: 0.5rem;
+            --radius-md: 1rem;
+            --radius-lg: 1.5rem;
+            --radius-full: 9999px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary);
+            color: var(--white);
+            line-height: 1.5;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn {
+            background: var(--white);
+            color: var(--primary);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--white);
+            color: var(--primary);
+        }
+
         .header {
             position: fixed;
             top: 0;
@@ -101,9 +90,29 @@
             gap: var(--spacing-xl);
         }
 
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+        }
+
         .nav-links {
             display: flex;
             gap: var(--spacing-md);
+        }
+
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
         }
 
         .header-actions {
@@ -114,7 +123,7 @@
 
         .main-content {
             max-width: 1200px;
-            margin: 100px auto 0;
+            margin: 120px auto 0;
             padding: var(--spacing-xl);
         }
 
@@ -124,8 +133,28 @@
         }
 
         .hero-title {
-            font-size: 48px;
+            font-size: 4rem;
             line-height: 1.2;
+            margin-bottom: var(--spacing-xl);
+            font-weight: 700;
+        }
+
+        .hero-title .highlight {
+            text-decoration: underline;
+            text-decoration-thickness: 3px;
+            text-underline-offset: 8px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .cta-container {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
             margin-bottom: var(--spacing-xl);
         }
 
@@ -136,13 +165,30 @@
 
         .search-wrapper {
             display: flex;
-            gap: var(--spacing-sm);
-            padding: var(--spacing-sm);
+            gap: var(--spacing-xs);
+            padding: var(--spacing-xs);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-full);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .search-input {
             flex: 1;
             min-width: 0;
+            background: transparent;
+            border: none;
+            color: var(--white);
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+        }
+
+        .search-btn {
+            padding: 0.75rem;
+            border-radius: var(--radius-full);
         }
 
         .trades-list {
@@ -156,20 +202,115 @@
             display: flex;
             align-items: center;
             gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .trade-card:hover {
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .trader-avatar {
             width: 40px;
             height: 40px;
-            border-radius: 50%;
+            border-radius: var(--radius-full);
         }
 
         .trade-action.buy {
-            color: var(--buy-color);
+            color: #00FF88;
         }
 
         .trade-action.sell {
-            color: var(--sell-color);
+            color: #FF4444;
+        }
+
+        .tokenomics {
+            margin-top: var(--spacing-xl);
+            padding: var(--spacing-xl);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+        }
+
+        .tokenomics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+
+        .tokenomics-card {
+            padding: var(--spacing-md);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-xl);
+        }
+
+        .faq {
+            margin-top: var(--spacing-xl);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .faq-item {
+            margin-bottom: var(--spacing-md);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: var(--spacing-md);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .faq-answer {
+            padding: 0 var(--spacing-md);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .faq-answer.active {
+            padding: var(--spacing-md);
+            max-height: 500px;
+        }
+
+        .footer {
+            margin-top: var(--spacing-xl);
+            padding: var(--spacing-xl);
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-links {
+            margin-top: var(--spacing-md);
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            margin: 0 var(--spacing-sm);
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
         }
 
         @media (max-width: 768px) {
@@ -185,10 +326,188 @@
             }
 
             .hero-title {
-                font-size: 32px;
+                font-size: 2.5rem;
+            }
+
+            .cta-container {
+                flex-direction: column;
+            }
+
+            .tokenomics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .social-links {
+                flex-direction: column;
+                align-items: center;
             }
         }
     </style>
+</head>
+
+<body>
+    <div class="layoutContainer">
+        <header class="header glass-effect">
+            <div class="header-content">
+                <a href="index.htm" class="logo">
+                    <img src="images/fomologo.png" alt="Fomo Logo" style="height: 32px; width: auto;">
+                </a>
+                
+                <nav class="nav-links">
+                    <a href="trades.html" class="nav-link">Trades</a>
+                    <a href="tokens.html" class="nav-link">Tokens</a>
+                    <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                </nav>
+
+                <div class="header-actions">
+                    <button class="btn connect-wallet">
+                        Connect Wallet
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="hero">
+                <h1 class="hero-title">
+                    Track the Top Memecoin <br>
+                    Traders in <span class="highlight">Realtime</span>
+                </h1>
+                
+                <p class="hero-subtitle">
+                    Never miss a trade again. Follow the smartest traders in the space.
+                </p>
+
+                <div class="search-container">
+                    <div class="search-wrapper">
+                        <input type="text" class="search-input" placeholder="Enter wallet address">
+                        <button class="btn search-btn">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="trades-list">
+                    <div class="trade-card">
+                        <div class="trade-header">
+                            <img src="profiles/3h65MmPZksoKKyEpEjnWU2Yk2iYT5oZDNitGy5cTaxoE.png" alt="trader" class="trader-avatar">
+                            <span class="trader-name">Jidn</span>
+                        </div>
+                        <div class="trade-details">
+                            <span class="trade-action buy">bought</span>
+                            <span class="trade-amount">0.069 sol (806k)</span>
+                            <span class="trade-token">Meme+</span>
+                            <span class="trade-price">$0.000014</span>
+                        </div>
+                        <div class="trade-time">
+                            <a href="#" class="time-link">5s ago</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cta-container">
+                    <button class="btn">Monitor Trades from Top Wallets</button>
+                    <button class="btn">Discover New and Trending Tokens</button>
+                    <button class="btn">Analyze the Most Profitable Wallets</button>
+                </div>
+
+                <div class="tokenomics">
+                    <h2 class="section-title">Tokenomics</h2>
+                    <div class="tokenomics-grid">
+                        <div class="tokenomics-card">
+                            <h3>Public</h3>
+                            <ul>
+                                <li>Realtime Trades</li>
+                                <li>Wallet holdings & Token PnL</li>
+                                <li>Realized PnL Leaderboard</li>
+                            </ul>
+                        </div>
+                        <div class="tokenomics-card">
+                            <h3>Tier 1 (100k+)</h3>
+                            <ul>
+                                <li>Realtime Token Tracker</li>
+                            </ul>
+                        </div>
+                        <div class="tokenomics-card">
+                            <h3>Tier 2 (420k+)</h3>
+                            <ul>
+                                <li>Coming Soon...</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="#" class="btn">Follow us on X</a>
+                    <a href="#" class="btn">Join the Telegram</a>
+                    <a href="#" class="btn">Buy $FOMO</a>
+                </div>
+
+                <div class="faq">
+                    <h2 class="section-title">FAQ</h2>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            What is Fomo?
+                            <span class="toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            Fomo is a real-time tracking platform for memecoin traders, providing insights into top wallet activities and market trends.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            Is Fomo free to use?
+                            <span class="toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            Yes, basic features are free. Premium features are available for token holders.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            Can I track non-Fomo wallets?
+                            <span class="toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            Yes, you can track any wallet address on the platform.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            How do I get my wallet on the leaderboard?
+                            <span class="toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            Your wallet will automatically appear on the leaderboard based on your trading activity and performance.
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>© 2025 Fomo. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const toggle = question.querySelector('.toggle');
+                
+                answer.classList.toggle('active');
+                toggle.textContent = answer.classList.contains('active') ? '-' : '+';
+            });
+        });
+    </script>
 </body>
 
 </html>

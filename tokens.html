@@ -1,93 +1,49 @@
 ﻿<!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="_next/static/css/fomo-theme.css">
+    <link rel="icon" type="image/png" href="images/fomologo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <title>Top Tokens - Kolscan</title>
-    <meta name="description" content="Discover trending memecoins and track their performance in real-time.">
-</head>
-
-<body>
-    <div class="layoutContainer">
-        <header class="header glass-effect">
-            <div class="header-content">
-                <a href="index.htm" class="logo">
-                    <span class="text-gradient" style="font-size: 24px; font-weight: 700;">Kolscan</span>
-                </a>
-                
-                <div class="price-container card">
-                    <img src="images/Solana.webp" alt="sol" width="20" height="20">
-                    <h2>$160.61</h2>
-                </div>
-
-                <nav class="nav-links">
-                    <a href="trades.html" class="nav-link">Trades</a>
-                    <a href="tokens.html" class="nav-link active">Tokens</a>
-                    <a href="leaderboard.html" class="nav-link">Leaderboard</a>
-                </nav>
-
-                <div class="header-actions">
-                    <button class="btn connect-wallet">
-                        Connect Wallet
-                    </button>
-                    <button class="btn settings-btn">
-                        <img src="images/Settings.webp" alt="Settings" width="24" height="24">
-                    </button>
-                </div>
-            </div>
-        </header>
-
-        <main class="main-content">
-            <section class="tokens-section">
-                <div class="section-header">
-                    <h1 class="section-title">Trending Tokens</h1>
-                    <div class="filters card">
-                        <button class="btn filter-btn active">All</button>
-                        <button class="btn filter-btn">New</button>
-                        <button class="btn filter-btn">Top Volume</button>
-                        <button class="btn filter-btn">Top Gainers</button>
-                    </div>
-                </div>
-
-                <div class="tokens-grid">
-                    <div class="token-card card">
-                        <div class="token-header">
-                            <img src="images/token-placeholder.png" alt="token" class="token-icon">
-                            <div class="token-info">
-                                <span class="token-name">Meme+</span>
-                                <span class="token-symbol">MEME+</span>
-                            </div>
-                        </div>
-                        <div class="token-stats">
-                            <div class="stat">
-                                <span class="stat-label">Price</span>
-                                <span class="stat-value">$0.000014</span>
-                            </div>
-                            <div class="stat">
-                                <span class="stat-label">24h Change</span>
-                                <span class="stat-value positive">+45.2%</span>
-                            </div>
-                            <div class="stat">
-                                <span class="stat-label">Volume</span>
-                                <span class="stat-value">$2.5M</span>
-                            </div>
-                        </div>
-                        <div class="token-footer">
-                            <button class="btn trade-btn">Trade</button>
-                            <button class="btn chart-btn">Chart</button>
-                        </div>
-                    </div>
-                    <!-- More token cards... -->
-                </div>
-            </section>
-        </main>
-    </div>
-
+    <title>Fomo - Trending Tokens</title>
+    <meta name="description" content="Track trending tokens and their performance in real-time.">
     <style>
+        :root {
+            --primary: #4D00FF;
+            --white: #FFFFFF;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --radius-sm: 0.5rem;
+            --radius-md: 1rem;
+            --radius-lg: 1.5rem;
+            --radius-full: 9999px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary);
+            color: var(--white);
+            line-height: 1.5;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         .header {
             position: fixed;
             top: 0;
@@ -105,9 +61,29 @@
             gap: var(--spacing-xl);
         }
 
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+        }
+
         .nav-links {
             display: flex;
             gap: var(--spacing-md);
+        }
+
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
         }
 
         .header-actions {
@@ -116,62 +92,94 @@
             gap: var(--spacing-md);
         }
 
+        .btn {
+            background: var(--white);
+            color: var(--primary);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
         .main-content {
             max-width: 1200px;
-            margin: 100px auto 0;
+            margin: 120px auto 0;
             padding: var(--spacing-xl);
         }
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--spacing-xl);
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto var(--spacing-xl);
         }
 
-        .filters {
+        .search-wrapper {
             display: flex;
-            gap: var(--spacing-sm);
-            padding: var(--spacing-sm);
+            gap: var(--spacing-xs);
+            padding: var(--spacing-xs);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-full);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .filter-btn {
+        .search-input {
+            flex: 1;
+            min-width: 0;
             background: transparent;
-            border: 1px solid var(--border-color);
+            border: none;
+            color: var(--white);
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
         }
 
-        .filter-btn.active {
-            background: var(--fomo-primary);
-            border-color: var(--fomo-primary);
+        .search-input:focus {
+            outline: none;
+        }
+
+        .search-btn {
+            padding: 0.75rem;
+            border-radius: var(--radius-full);
         }
 
         .tokens-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: var(--spacing-lg);
+            gap: var(--spacing-md);
         }
 
         .token-card {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-md);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-md);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .token-card:hover {
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
         }
 
         .token-header {
             display: flex;
             align-items: center;
             gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
         }
 
         .token-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: var(--border-radius-lg);
-        }
-
-        .token-info {
-            display: flex;
-            flex-direction: column;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
         }
 
         .token-name {
@@ -179,53 +187,46 @@
         }
 
         .token-symbol {
-            font-size: 14px;
-            opacity: 0.8;
+            color: rgba(255, 255, 255, 0.7);
         }
 
-        .token-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--spacing-sm);
+        .token-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-xs);
         }
 
-        .stat {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
+        .token-volume {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: var(--spacing-xs);
         }
 
-        .stat-label {
-            font-size: 14px;
-            opacity: 0.8;
-        }
-
-        .stat-value {
+        .token-change {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
             font-weight: 600;
+            margin-bottom: var(--spacing-sm);
         }
 
-        .stat-value.positive {
-            color: var(--buy-color);
+        .token-change.positive {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00FF88;
         }
 
-        .stat-value.negative {
-            color: var(--sell-color);
+        .token-change.negative {
+            background: rgba(255, 68, 68, 0.2);
+            color: #FF4444;
         }
 
-        .token-footer {
+        .token-actions {
             display: flex;
             gap: var(--spacing-sm);
         }
 
-        .trade-btn {
+        .token-actions .btn {
             flex: 1;
-        }
-
-        .chart-btn {
-            flex: 1;
-            background: transparent;
-            border: 1px solid var(--border-color);
+            text-align: center;
         }
 
         @media (max-width: 768px) {
@@ -240,17 +241,106 @@
                 margin-top: var(--spacing-md);
             }
 
-            .section-header {
-                flex-direction: column;
-                gap: var(--spacing-md);
-            }
-
-            .filters {
-                width: 100%;
-                overflow-x: auto;
-                padding: var(--spacing-sm);
+            .tokens-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
+</head>
+
+<body>
+    <div class="layoutContainer">
+        <header class="header glass-effect">
+            <div class="header-content">
+                <a href="index.htm" class="logo">
+                    <img src="images/fomologo.png" alt="Fomo Logo" style="height: 32px; width: auto;">
+                </a>
+                
+                <nav class="nav-links">
+                    <a href="trades.html" class="nav-link">Trades</a>
+                    <a href="tokens.html" class="nav-link">Tokens</a>
+                    <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                </nav>
+
+                <div class="header-actions">
+                    <button class="btn connect-wallet">
+                        Connect Wallet
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <h1 class="text-4xl font-bold text-center mb-8">Trending Tokens</h1>
+
+            <div class="search-container">
+                <div class="search-wrapper">
+                    <input type="text" class="search-input" placeholder="Search tokens...">
+                    <button class="btn search-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="tokens-grid">
+                <!-- Token Card 1 -->
+                <div class="token-card">
+                    <div class="token-header">
+                        <img src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png" alt="SOL" class="token-icon">
+                        <div>
+                            <div class="token-name">Solana</div>
+                            <div class="token-symbol">SOL</div>
+                        </div>
+                    </div>
+                    <div class="token-price">$160.61</div>
+                    <div class="token-volume">Vol: $2.4B</div>
+                    <div class="token-change positive">+5.2%</div>
+                    <div class="token-actions">
+                        <button class="btn">View</button>
+                        <button class="btn">Trade</button>
+                    </div>
+                </div>
+
+                <!-- Token Card 2 -->
+                <div class="token-card">
+                    <div class="token-header">
+                        <img src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v/logo.png" alt="USDC" class="token-icon">
+                        <div>
+                            <div class="token-name">USD Coin</div>
+                            <div class="token-symbol">USDC</div>
+                        </div>
+                    </div>
+                    <div class="token-price">$1.00</div>
+                    <div class="token-volume">Vol: $1.8B</div>
+                    <div class="token-change positive">+0.1%</div>
+                    <div class="token-actions">
+                        <button class="btn">View</button>
+                        <button class="btn">Trade</button>
+                    </div>
+                </div>
+
+                <!-- Token Card 3 -->
+                <div class="token-card">
+                    <div class="token-header">
+                        <img src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.png" alt="USDT" class="token-icon">
+                        <div>
+                            <div class="token-name">Tether</div>
+                            <div class="token-symbol">USDT</div>
+                        </div>
+                    </div>
+                    <div class="token-price">$1.00</div>
+                    <div class="token-volume">Vol: $1.2B</div>
+                    <div class="token-change negative">-0.1%</div>
+                    <div class="token-actions">
+                        <button class="btn">View</button>
+                        <button class="btn">Trade</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 </body>
+
 </html>

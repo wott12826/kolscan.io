@@ -393,18 +393,32 @@
                 '6XawhbbxtsRcQA8KTkHT9f9nc6d69UwqCDh6U5EEbEmX'
             ],
             tokens: [
-                { symbol: 'SOL', icon: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png' },
-                { symbol: 'BONK', icon: 'https://arweave.net/hQB3hV5MQB6MboWJfs1bDl0qyYJ5XQZzXJ5XQZzXJ5XQ' },
-                { symbol: 'JUP', icon: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN/logo.png' },
-                { symbol: 'RAY', icon: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png' }
-            ],
-            dexes: ['Raydium', 'Orca', 'Jupiter']
+                { 
+                    symbol: 'SOL', 
+                    icon: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png',
+                    dex: 'Solana'
+                },
+                { 
+                    symbol: 'BONK', 
+                    icon: 'https://arweave.net/hQB3hV5MQB6MboWJfs1bDl0qyYJ5XQZzXJ5XQZzXJ5XQ',
+                    dex: 'Bonk'
+                },
+                { 
+                    symbol: 'JUP', 
+                    icon: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN/logo.png',
+                    dex: 'Jupiter'
+                },
+                { 
+                    symbol: 'RAY', 
+                    icon: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png',
+                    dex: 'Raydium'
+                }
+            ]
         };
 
         function generateRandomTrade() {
             const wallet = SIMULATION_CONFIG.wallets[Math.floor(Math.random() * SIMULATION_CONFIG.wallets.length)];
             const token = SIMULATION_CONFIG.tokens[Math.floor(Math.random() * SIMULATION_CONFIG.tokens.length)];
-            const dex = SIMULATION_CONFIG.dexes[Math.floor(Math.random() * SIMULATION_CONFIG.dexes.length)];
             const amount = (Math.random() * 100).toFixed(2);
             const price = (Math.random() * 100).toFixed(4);
             const priceChange = (Math.random() * 10 - 5).toFixed(2);
@@ -424,7 +438,7 @@
                 priceChange: `${priceChange}%`,
                 timestamp,
                 signature,
-                dex
+                dex: token.dex
             };
         }
 

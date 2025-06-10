@@ -359,6 +359,9 @@
             return value;
         }
 
+        // Add latest trade tracking
+        let latestTrade = null;
+
         function createTradeRow(trade) {
             const row = document.createElement('div');
             row.className = 'trade-row new-trade';
@@ -368,6 +371,18 @@
             const amountClass = isBuy ? 'buy' : 'sell';
             const amountPrefix = isBuy ? '+' : '-';
             const amountValue = formatSolAmount(trade.amount);
+            
+            // Store as latest trade
+            latestTrade = {
+                ...trade,
+                amountClass,
+                amountPrefix,
+                amountValue,
+                isBuy
+            };
+            
+            // Save to localStorage for index page
+            localStorage.setItem('latestTrade', JSON.stringify(latestTrade));
             
             row.innerHTML = `
                 <div class="wallet-address">
@@ -388,7 +403,6 @@
                 </div>
                 <div class="trade-time">${timeAgo(trade.timestamp || Date.now()/1000)}</div>
             `;
-           
             return row;
         }
 
@@ -478,7 +492,7 @@
             const timestamp = Math.floor(Date.now() / 1000);
             const signature = Math.random().toString(36).substring(7);
 
-            return {
+            const trade = {
                 wallet,
                 amount: parseFloat(amount),
                 type,
@@ -490,6 +504,11 @@
                 signature,
                 dex: token.dex
             };
+
+            // Store latest trade in localStorage
+            localStorage.setItem('latestTrade', JSON.stringify(trade));
+
+            return trade;
         }
 
         async function fetchRecentTrades() {

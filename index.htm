@@ -215,6 +215,25 @@
             background: rgba(255, 255, 255, 0.15);
         }
 
+        .trade-card.new-trade {
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                background: rgba(255, 255, 255, 0.2);
+            }
+            50% {
+                transform: scale(1.02);
+                background: rgba(255, 255, 255, 0.3);
+            }
+            100% {
+                transform: scale(1);
+                background: rgba(255, 255, 255, 0.1);
+            }
+        }
+
         .trader-avatar {
             width: 40px;
             height: 40px;
@@ -390,19 +409,19 @@
                 </div>
 
                 <div class="trades-list">
-                    <div class="trade-card">
+                    <div class="trade-card" id="latest-trade-card">
                         <div class="trade-header">
-                            <img src="profiles/3h65MmPZksoKKyEpEjnWU2Yk2iYT5oZDNitGy5cTaxoE.png" alt="trader" class="trader-avatar">
-                            <span class="trader-name">Jidn</span>
+                            <img src="" alt="trader" class="trader-avatar">
+                            <span class="trader-name" id="latest-trader">Loading...</span>
                         </div>
                         <div class="trade-details">
-                            <span class="trade-action buy">bought</span>
-                            <span class="trade-amount">0.069 sol (806k)</span>
-                            <span class="trade-token">Meme+</span>
-                            <span class="trade-price">$0.000014</span>
+                            <span class="trade-action" id="latest-action">loading</span>
+                            <span class="trade-amount" id="latest-amount">loading</span>
+                            <span class="trade-token" id="latest-token">loading</span>
+                            <span class="trade-price" id="latest-price">loading</span>
                         </div>
                         <div class="trade-time">
-                            <a href="#" class="time-link">5s ago</a>
+                            <a href="trades.html" class="time-link" id="latest-time">loading</a>
                         </div>
                     </div>
                 </div>
@@ -440,9 +459,9 @@
                 </div>
 
                 <div class="social-links">
-                    <a href="#" class="btn">Follow us on X</a>
-                    <a href="#" class="btn">Join the Telegram</a>
-                    <a href="#" class="btn">Buy $FOMO</a>
+                    <a href="https://x.com/ScanFomo" class="btn">Follow us on X</a>
+                    <a href="https://t.me/ScanFomo" class="btn">Join the Telegram</a>
+                    <a href="oldlink" class="btn">Buy $FOMO</a>
                 </div>
 
                 <div class="faq">
@@ -507,6 +526,89 @@
                 toggle.textContent = answer.classList.contains('active') ? '-' : '+';
             });
         });
+
+        let lastTradeSignature = null;
+        let lastUpdateTime = 0;
+
+        function updateLatestTrade() {
+            const latestTrade = JSON.parse(localStorage.getItem('latestTrade'));
+            if (!latestTrade) return;
+
+            // Check if this is a new trade by comparing signatures
+            if (lastTradeSignature !== latestTrade.signature) {
+                const tradeCard = document.getElementById('latest-trade-card');
+                
+                // Add animation class
+                tradeCard.classList.add('new-trade');
+                
+                // Update all trade information
+                document.getElementById('latest-trader').textContent = latestTrade.wallet.slice(0, 4) + '...' + latestTrade.wallet.slice(-4);
+                document.getElementById('latest-action').textContent = latestTrade.type === 'buy' ? 'bought' : 'sold';
+                document.getElementById('latest-action').className = 'trade-action ' + latestTrade.type;
+                document.getElementById('latest-amount').textContent = `${latestTrade.amount} sol`;
+                document.getElementById('latest-token').textContent = latestTrade.tokenSymbol;
+                document.getElementById('latest-price').textContent = `$${latestTrade.price.toFixed(6)}`;
+                document.getElementById('latest-time').textContent = 'just now';
+                
+                // Remove animation class after animation completes
+                setTimeout(() => {
+                    tradeCard.classList.remove('new-trade');
+                }, 500);
+
+                // Update last trade signature
+                lastTradeSignature = latestTrade.signature;
+                lastUpdateTime = Date.now();
+            } else {
+                // Only update the time for existing trade
+                const timeElement = document.getElementById('latest-time');
+                if (timeElement) {
+                    timeElement.textContent = timeAgo(latestTrade.timestamp);
+                }
+            }
+        }
+
+        function timeAgo(timestamp) {
+            const seconds = Math.floor((Date.now() / 1000) - timestamp);
+            
+            if (seconds < 5) {
+                return 'just now';
+            }
+            
+            if (seconds < 60) {
+                return `${seconds}s ago`;
+            }
+            
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) {
+                return `${minutes}m ago`;
+            }
+            
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) {
+                return `${hours}h ago`;
+            }
+            
+            const days = Math.floor(hours / 24);
+            if (days < 30) {
+                return `${days}d ago`;
+            }
+            
+            const months = Math.floor(days / 30);
+            if (months < 12) {
+                return `${months}mo ago`;
+            }
+            
+            const years = Math.floor(months / 12);
+            return `${years}y ago`;
+        }
+
+        // Initial update
+        updateLatestTrade();
+
+        // Check for new trades every second
+        setInterval(() => {
+            updateLatestTrade();
+        }, 1000);
     </script>
 </body>
 

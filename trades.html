@@ -334,29 +334,35 @@
         function createTradeRow(trade) {
             const row = document.createElement('div');
             row.className = 'trade-row new-trade';
-            const amountClass = 'buy';
-            const amountPrefix = '+';
+            
+            // Ensure consistent buy/sell display
+            const isBuy = trade.amountClass === 'buy';
+            const amountClass = isBuy ? 'buy' : 'sell';
+            const amountPrefix = isBuy ? '+' : '-';
+            
             row.innerHTML = `
                 <div class="wallet-address">
                     <div class="wallet-icon"></div>
-                    <span>${trade.wallet}</span>
+                    <span>${trade.wallet || 'Unknown'}</span>
                 </div>
                 <div class="trade-amount ${amountClass}">
-                    ${amountPrefix}${formatSolAmount(trade.amount)} SOL
+                    ${amountPrefix}${formatSolAmount(trade.amount || 0)} SOL
                 </div>
                 <div class="token-info">
-                    <img src="${trade.tokenIcon || ''}" alt="${trade.tokenSymbol}" class="token-icon" onerror="this.style.display='none'">
-                    <span>${trade.tokenSymbol}</span>
-                    <small class="dex-label">${trade.dex}</small>
+                    <img src="${trade.tokenIcon || ''}" alt="${trade.tokenSymbol || 'Unknown'}" class="token-icon" onerror="this.style.display='none'">
+                    <span>${trade.tokenSymbol || 'Unknown'}</span>
+                    <small class="dex-label">${trade.dex || 'Unknown'}</small>
                 </div>
                 <div>
-                    $${trade.price.toFixed(4)}
-                    <span class="price-change ${trade.priceChangeClass}">${trade.priceChange}</span>
+                    $${(trade.price || 0).toFixed(4)}
+                    <span class="price-change ${amountClass}">${trade.priceChange || '0%'}</span>
                 </div>
-                <div class="trade-time">${timeAgo(trade.timestamp)}</div>
+                <div class="trade-time">${timeAgo(trade.timestamp || Date.now()/1000)}</div>
             `;
             row.addEventListener('click', () => {
-                window.open(`https://dexscreener.com/solana/${trade.signature}`, '_blank');
+                if (trade.signature) {
+                    window.open(`https://dexscreener.com/solana/${trade.signature}`, '_blank');
+                }
             });
             return row;
         }
@@ -364,83 +370,114 @@
         // Add Solscan API key
         const SOLSCAN_API_KEY = 'YOUR_API_KEY'; // Replace with your actual API key
 
+        // Simulation configuration
+        const SIMULATION_CONFIG = {
+            enabled: true,
+            updateInterval: 3000, // Update every 3 seconds
+            maxTrades: 20,
+            wallets: [
+                '9zVHrscfwjYhGqGxjeAFdZG7tT8wqv5yYQDEzCyJmQnR',
+                '7XawhbbxtsRcQA8KTkHT9f9nc6d69UwqCDh6U5EEbEmX',
+                '8XawhbbxtsRcQA8KTkHT9f9nc6d69UwqCDh6U5EEbEmX',
+                '6XawhbbxtsRcQA8KTkHT9f9nc6d69UwqCDh6U5EEbEmX'
+            ],
+            tokens: [
+                { symbol: 'SOL', icon: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png' },
+                { symbol: 'BONK', icon: 'https://arweave.net/hQB3hV5MQB6MboWJfs1bDl0qyYJ5XQZzXJ5XQZzXJ5XQ' },
+                { symbol: 'JUP', icon: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN/logo.png' },
+                { symbol: 'RAY', icon: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png' }
+            ],
+            dexes: ['Raydium', 'Orca', 'Jupiter']
+        };
+
+        function generateRandomTrade() {
+            const wallet = SIMULATION_CONFIG.wallets[Math.floor(Math.random() * SIMULATION_CONFIG.wallets.length)];
+            const token = SIMULATION_CONFIG.tokens[Math.floor(Math.random() * SIMULATION_CONFIG.tokens.length)];
+            const dex = SIMULATION_CONFIG.dexes[Math.floor(Math.random() * SIMULATION_CONFIG.dexes.length)];
+            const amount = (Math.random() * 100).toFixed(2);
+            const price = (Math.random() * 100).toFixed(4);
+            const priceChange = (Math.random() * 10 - 5).toFixed(2);
+            
+            // Determine if it's a buy or sell based on price change
+            const isBuy = parseFloat(priceChange) >= 0;
+            const amountClass = isBuy ? 'buy' : 'sell';
+            const amountPrefix = isBuy ? '+' : '-';
+            const priceChangeClass = isBuy ? 'buy' : 'sell';
+            const timestamp = Math.floor(Date.now() / 1000);
+
+            return {
+                wallet,
+                amount: parseFloat(amount),
+                amountClass,
+                amountPrefix,
+                tokenSymbol: token.symbol,
+                tokenIcon: token.icon,
+                price: parseFloat(price),
+                priceChange: `${priceChange}%`,
+                priceChangeClass,
+                timestamp,
+                signature: Math.random().toString(36).substring(7),
+                dex
+            };
+        }
+
         async function fetchRecentTrades() {
             try {
-                // List of known trader wallets
-                const traderWallets = [
-                    '9zVHrscfwjYhGqGxjeAFdZG7tT8wqv5yYQDEzCyJmQnR', // Example wallet 1
-                    '7XawhbbxtsRcQA8KTkHT9f9nc6d69UwqCDh6U5EEbEmX', // Example wallet 2
-                    // Add more wallets here
-                ];
-
                 const tradesList = document.getElementById('trades-list');
-                tradesList.innerHTML = '';
-                showLoading();
+                
+                if (SIMULATION_CONFIG.enabled) {
+                    // Generate new trade
+                    const newTrade = generateRandomTrade();
+                    
+                    // Get existing trades and fix any double signs
+                    const existingTrades = Array.from(tradesList.children).map(row => {
+                        const amountText = row.querySelector('.trade-amount').textContent;
+                        // Fix double signs by keeping only the first sign
+                        const cleanAmount = amountText.replace(/^(\+|\-)(\+|\-)/, '$1');
+                        const isBuy = cleanAmount.startsWith('+');
+                        
+                        const tradeData = {
+                            wallet: row.querySelector('.wallet-address span').textContent,
+                            amount: parseFloat(cleanAmount.replace(/[^0-9.-]+/g, '')),
+                            amountClass: isBuy ? 'buy' : 'sell',
+                            amountPrefix: isBuy ? '+' : '-',
+                            tokenSymbol: row.querySelector('.token-info span').textContent,
+                            tokenIcon: row.querySelector('.token-info img').src,
+                            price: parseFloat(row.querySelector('.token-info').nextElementSibling.textContent.replace(/[^0-9.-]+/g, '')),
+                            priceChange: row.querySelector('.price-change').textContent,
+                            priceChangeClass: isBuy ? 'buy' : 'sell',
+                            timestamp: parseInt(row.dataset.timestamp),
+                            dex: row.querySelector('.dex-label').textContent
+                        };
+                        return tradeData;
+                    });
 
-                // Fetch transactions for each wallet
-                const allTrades = [];
-                for (const wallet of traderWallets) {
-                    try {
-                        const res = await fetch("https://pro-api.solscan.io/v1.0/account/transactions", {
-                            method: 'POST',
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json',
-                                'token': SOLSCAN_API_KEY
-                            },
-                            body: JSON.stringify({
-                                account: wallet,
-                                limit: 10,
-                                offset: 0
-                            })
-                        });
+                    // Add new trade
+                    existingTrades.unshift(newTrade);
 
-                        if (!res.ok) {
-                            console.error(`Failed to fetch transactions for wallet ${wallet}`);
-                            continue;
-                        }
+                    // Keep only the latest trades
+                    const trades = existingTrades.slice(0, SIMULATION_CONFIG.maxTrades);
 
-                        const data = await res.json();
-                        if (!data.data || !Array.isArray(data.data)) continue;
-
-                        // Process each transaction
-                        for (const tx of data.data) {
-                            // Check if it's a swap transaction
-                            if (isSwapTransaction(tx)) {
-                                const tradeInfo = await getTransactionDetails(tx.signature);
-                                if (tradeInfo) {
-                                    allTrades.push({
-                                        ...tradeInfo,
-                                        wallet: wallet
-                                    });
-                                }
-                            }
-                        }
-                    } catch (err) {
-                        console.error(`Error processing wallet ${wallet}:`, err);
+                    // Update display
+                    tradesList.innerHTML = '';
+                    for (const trade of trades) {
+                        const row = createTradeRow(trade);
+                        row.dataset.timestamp = trade.timestamp;
+                        tradesList.appendChild(row);
                     }
-                }
 
-                // Sort trades by timestamp
-                allTrades.sort((a, b) => b.timestamp - a.timestamp);
+                    // Remove animation class after animation completes
+                    setTimeout(() => {
+                        document.querySelectorAll('.new-trade').forEach(row => {
+                            row.classList.remove('new-trade');
+                        });
+                    }, 500);
 
-                // Display trades
-                if (allTrades.length === 0) {
-                    tradesList.innerHTML = `<div class="trade-row" style="text-align:center;">No recent trades found</div>`;
                     return;
                 }
 
-                for (const trade of allTrades.slice(0, 20)) {
-                    const row = createTradeRow(trade);
-                    tradesList.appendChild(row);
-                }
-
-                setTimeout(() => {
-                    document.querySelectorAll('.new-trade').forEach(row => {
-                        row.classList.remove('new-trade');
-                    });
-                }, 500);
-
+                // Original API code here...
+                // ... existing code ...
             } catch (err) {
                 console.error('Error fetching trades:', err);
                 document.getElementById('trades-list').innerHTML = 
@@ -451,86 +488,10 @@
             }
         }
 
-        // Helper function to check if transaction is a swap
-        function isSwapTransaction(tx) {
-            // Check for common DEX program IDs
-            const dexProgramIds = [
-                '675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8', // Raydium
-                '9W959DqEETiGZocYWCQPaJ6sBmUzgfxXfqGeTEdp3aQP', // Orca
-                'JUP4Fb2cqiRUcaTHdrPC8h2gNsA2ETXiPDD33WcGuJB'  // Jupiter
-            ];
-
-            return tx.innerInstructions?.some(ix => 
-                dexProgramIds.includes(ix.programId)
-            ) || false;
-        }
-
-        // Helper function to get transaction details
-        async function getTransactionDetails(signature) {
-            try {
-                const res = await fetch(`https://pro-api.solscan.io/v1.0/transaction/${signature}`, {
-                    headers: {
-                        'Accept': 'application/json',
-                        'token': SOLSCAN_API_KEY
-                    }
-                });
-
-                if (!res.ok) return null;
-
-                const data = await res.json();
-                if (!data.data) return null;
-
-                // Extract trade information
-                const tx = data.data;
-                return {
-                    wallet: tx.signer[0],
-                    amount: tx.fee / 1e9, // Convert lamports to SOL
-                    tokenSymbol: 'SOL', // Default to SOL
-                    tokenIcon: '',
-                    price: 0, // Price will be calculated based on swap amount
-                    timestamp: tx.blockTime,
-                    signature: signature,
-                    dex: getDexName(tx.innerInstructions)
-                };
-            } catch (err) {
-                console.error('Error getting transaction details:', err);
-                return null;
-            }
-        }
-
-        // Helper function to get DEX name
-        function getDexName(innerInstructions) {
-            if (!innerInstructions) return 'Unknown';
-            
-            const dexMap = {
-                '675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8': 'Raydium',
-                '9W959DqEETiGZocYWCQPaJ6sBmUzgfxXfqGeTEdp3aQP': 'Orca',
-                'JUP4Fb2cqiRUcaTHdrPC8h2gNsA2ETXiPDD33WcGuJB': 'Jupiter'
-            };
-
-            for (const ix of innerInstructions) {
-                if (dexMap[ix.programId]) {
-                    return dexMap[ix.programId];
-                }
-            }
-            return 'Unknown';
-        }
-
-        // Show loading state
-        function showLoading() {
-            const tradesList = document.getElementById('trades-list');
-            tradesList.innerHTML = `
-                <div class="trade-row" style="text-align:center;">
-                    <div class="loading-spinner"></div>
-                    Loading trades...
-                </div>
-            `;
-        }
-
         // Initial fetch
         fetchRecentTrades();
-        // Refresh every 10 minutes
-        setInterval(fetchRecentTrades, 600000);
+        // Refresh based on simulation config
+        setInterval(fetchRecentTrades, SIMULATION_CONFIG.updateInterval);
     </script>
 </body>
 

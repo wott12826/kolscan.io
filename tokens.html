@@ -245,6 +245,85 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .access-modal {
+            position: fixed;
+            z-index: 9999;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(10,10,20,0.65);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        .access-requirement {
+            max-width: 400px;
+            width: 100%;
+            padding: 2.5rem 2rem 2rem 2rem;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, rgba(77,0,255,0.18) 0%, rgba(26,0,51,0.22) 100%);
+            border: 1.5px solid rgba(255,255,255,0.18);
+            box-shadow: 0 8px 48px 0 rgba(77,0,255,0.18), 0 1.5px 8px 0 rgba(0,0,0,0.12);
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            position: relative;
+            animation: popIn 0.5s cubic-bezier(.23,1.12,.62,1.01);
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.92) translateY(30px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .access-icon {
+            margin-bottom: 1.2rem;
+        }
+        .access-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.01em;
+        }
+        .access-desc {
+            font-size: 1.08rem;
+            color: #e0e0ff;
+            margin-bottom: 1.2rem;
+            line-height: 1.5;
+        }
+        .access-title .highlight, .access-desc .highlight {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .access-ca {
+            font-size: 1rem;
+            color: #b3b3ff;
+            background: rgba(77,0,255,0.10);
+            border-radius: var(--radius-full);
+            padding: 0.5rem 1rem;
+            display: inline-block;
+            user-select: all;
+            margin-top: 0.5rem;
+            letter-spacing: 0.01em;
+        }
+        .ca-address {
+            font-family: monospace;
+            color: var(--white);
+            font-size: 1.05em;
+        }
+        body > .layoutContainer > header {
+            position: relative;
+            z-index: 10000;
+        }
+        .connect-wallet.connected {
+            background: #00FF88;
+            color: #222;
+            cursor: default;
+            opacity: 0.85;
+        }
     </style>
 </head>
 
@@ -341,6 +420,126 @@
             </div>
         </main>
     </div>
+
+    <div class="access-modal">
+        <div class="access-requirement glass-effect">
+            <div class="access-icon">
+                <svg width="48" height="48" fill="none" viewBox="0 0 48 48">
+                    <rect width="48" height="48" rx="16" fill="url(#g1)" />
+                    <path d="M24 32a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm7-8h-1v-3a6 6 0 1 0-12 0v3h-1a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Zm-9-3a4 4 0 1 1 8 0v3h-8v-3Zm9 13H17v-8h14v8Z" fill="#fff"/>
+                    <defs>
+                        <linearGradient id="g1" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#4D00FF"/>
+                            <stop offset="1" stop-color="#1A0033"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <div class="access-title">
+                Access Restricted
+            </div>
+            <div class="access-desc">
+                Must hold at least <span class="highlight">1,000,000 $FOMO</span> tokens to access this page.
+            </div>
+            <div class="access-ca">
+                CA: <span class="ca-address">oldca</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const FOMO_MINT = 'FOMO_MINT_ADDRESS'; // <-- замените на реальный mint $FOMO
+    const FOMO_DECIMALS = 9; // Обычно 9, проверьте для вашего токена
+    const FOMO_REQUIRED = 1_000_000;
+
+    async function connectPhantomWallet() {
+        if (!window.solana || !window.solana.isPhantom) {
+            alert('Phantom Wallet not found! Please install the Phantom extension.');
+            window.open('https://phantom.app/', '_blank');
+            return;
+        }
+        try {
+            const resp = await window.solana.connect();
+            const pubkey = resp.publicKey.toString();
+            localStorage.setItem('phantomWallet', pubkey);
+            updateWalletButton(pubkey);
+            checkFomoAccess(pubkey);
+        } catch (err) {
+            console.log('Wallet connection cancelled', err);
+        }
+    }
+
+    function updateWalletButton(pubkey) {
+        const btns = document.querySelectorAll('.connect-wallet');
+        btns.forEach(btn => {
+            if (pubkey) {
+                btn.textContent = pubkey.slice(0, 4) + '...' + pubkey.slice(-4);
+                btn.disabled = false;
+                btn.classList.add('connected');
+                btn.onclick = logoutPhantomWallet;
+                btn.title = 'Disconnect';
+            } else {
+                btn.textContent = 'Connect Wallet';
+                btn.disabled = false;
+                btn.classList.remove('connected');
+                btn.onclick = connectPhantomWallet;
+                btn.title = '';
+            }
+        });
+    }
+
+    function logoutPhantomWallet() {
+        localStorage.removeItem('phantomWallet');
+        updateWalletButton(null);
+        const modal = document.querySelector('.access-modal');
+        if (modal) modal.style.display = 'flex';
+    }
+
+    async function checkFomoAccess(pubkey) {
+        try {
+            const url = 'https://api.mainnet-beta.solana.com';
+            const body = {
+                jsonrpc: '2.0',
+                id: 1,
+                method: 'getTokenAccountsByOwner',
+                params: [
+                    pubkey,
+                    { mint: FOMO_MINT },
+                    { encoding: 'jsonParsed' }
+                ]
+            };
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            const data = await res.json();
+            let balance = 0;
+            if (data.result.value.length > 0) {
+                balance = parseInt(data.result.value[0].account.data.parsed.info.tokenAmount.amount, 10) / (10 ** FOMO_DECIMALS);
+            }
+            if (balance >= FOMO_REQUIRED) {
+                document.querySelector('.access-modal').style.display = 'none';
+            } else {
+                document.querySelector('.access-modal').style.display = 'flex';
+            }
+        } catch (e) {
+            document.querySelector('.access-modal').style.display = 'flex';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const btns = document.querySelectorAll('.connect-wallet');
+        btns.forEach(btn => {
+            btn.onclick = connectPhantomWallet;
+        });
+        const pubkey = localStorage.getItem('phantomWallet');
+        if (pubkey) {
+            updateWalletButton(pubkey);
+            checkFomoAccess(pubkey);
+        }
+    });
+    </script>
 </body>
 
 </html>

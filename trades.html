@@ -273,6 +273,13 @@
             margin-left: 0.5rem;
             text-transform: uppercase;
         }
+
+        .connect-wallet.connected {
+            background: #00FF88;
+            color: #222;
+            cursor: default;
+            opacity: 0.85;
+        }
     </style>
 </head>
 
@@ -574,6 +581,55 @@
         fetchRecentTrades();
         // Refresh based on simulation config
         setInterval(fetchRecentTrades, SIMULATION_CONFIG.updateInterval);
+
+        async function connectPhantomWallet() {
+            if (!window.solana || !window.solana.isPhantom) {
+                alert('Phantom Wallet not found! Please install the Phantom extension.');
+                window.open('https://phantom.app/', '_blank');
+                return;
+            }
+            try {
+                const resp = await window.solana.connect();
+                const pubkey = resp.publicKey.toString();
+                localStorage.setItem('phantomWallet', pubkey);
+                updateWalletButton(pubkey);
+                if (typeof checkFomoAccess === 'function') checkFomoAccess(pubkey);
+            } catch (err) {
+                console.log('Wallet connection cancelled', err);
+            }
+        }
+        function updateWalletButton(pubkey) {
+            const btns = document.querySelectorAll('.connect-wallet');
+            btns.forEach(btn => {
+                if (pubkey) {
+                    btn.textContent = pubkey.slice(0, 4) + '...' + pubkey.slice(-4);
+                    btn.disabled = false;
+                    btn.classList.add('connected');
+                    btn.onclick = logoutPhantomWallet;
+                    btn.title = 'Disconnect';
+                } else {
+                    btn.textContent = 'Connect Wallet';
+                    btn.disabled = false;
+                    btn.classList.remove('connected');
+                    btn.onclick = connectPhantomWallet;
+                    btn.title = '';
+                }
+            });
+        }
+        function logoutPhantomWallet() {
+            localStorage.removeItem('phantomWallet');
+            updateWalletButton(null);
+            const modal = document.querySelector('.access-modal');
+            if (modal) modal.style.display = 'flex';
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const btns = document.querySelectorAll('.connect-wallet');
+            btns.forEach(btn => {
+                btn.onclick = connectPhantomWallet;
+            });
+            const pubkey = localStorage.getItem('phantomWallet');
+            if (pubkey) updateWalletButton(pubkey);
+        });
     </script>
 </body>
 

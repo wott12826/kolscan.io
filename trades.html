@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="_next/static/css/fomo-theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Live Trades - Kolscan</title>
+    <meta name="description" content="Track live memecoin trades in real-time. Never miss a trade again.">
+</head>
+
+<body>
+    <div class="layoutContainer">
+        <header class="header glass-effect">
+            <div class="header-content">
+                <a href="index.htm" class="logo">
+                    <span class="text-gradient" style="font-size: 24px; font-weight: 700;">Kolscan</span>
+                </a>
+                
+                <div class="price-container card">
+                    <img src="images/Solana.webp" alt="sol" width="20" height="20">
+                    <h2>$160.61</h2>
+                </div>
+
+                <nav class="nav-links">
+                    <a href="trades.html" class="nav-link active">Trades</a>
+                    <a href="tokens.html" class="nav-link">Tokens</a>
+                    <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                </nav>
+
+                <div class="header-actions">
+                    <button class="btn connect-wallet">
+                        Connect Wallet
+                    </button>
+                    <button class="btn settings-btn">
+                        <img src="images/Settings.webp" alt="Settings" width="24" height="24">
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="trades-section">
+                <div class="section-header">
+                    <h1 class="section-title">Live Trades</h1>
+                    <div class="filters card">
+                        <button class="btn filter-btn active">All</button>
+                        <button class="btn filter-btn">Buys</button>
+                        <button class="btn filter-btn">Sells</button>
+                        <button class="btn filter-btn">Top Traders</button>
+                    </div>
+                </div>
+
+                <div class="trades-grid">
+                    <div class="trade-card card">
+                        <div class="trade-header">
+                            <img src="profiles/3h65MmPZksoKKyEpEjnWU2Yk2iYT5oZDNitGy5cTaxoE.png" alt="trader" class="trader-avatar">
+                            <div class="trader-info">
+                                <span class="trader-name">Jidn</span>
+                                <span class="trader-rank">#1 Trader</span>
+                            </div>
+                        </div>
+                        <div class="trade-details">
+                            <div class="trade-action buy">
+                                <span class="action-label">Bought</span>
+                                <span class="amount">0.069 SOL</span>
+                            </div>
+                            <div class="trade-token">
+                                <span class="token-name">Meme+</span>
+                                <span class="token-price">$0.000014</span>
+                            </div>
+                        </div>
+                        <div class="trade-footer">
+                            <a href="#" class="time-link">5s ago</a>
+                            <a href="#" class="tx-link">View TX</a>
+                        </div>
+                    </div>
+                    <!-- More trade cards... -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <style>
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: var(--spacing-md) var(--spacing-xl);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xl);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 100px auto 0;
+            padding: var(--spacing-xl);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .filters {
+            display: flex;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm);
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+        }
+
+        .filter-btn.active {
+            background: var(--fomo-primary);
+            border-color: var(--fomo-primary);
+        }
+
+        .trades-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .trade-card {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .trade-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .trader-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .trader-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .trader-name {
+            font-weight: 600;
+        }
+
+        .trader-rank {
+            font-size: 14px;
+            color: var(--fomo-primary);
+        }
+
+        .trade-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .trade-action {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .action-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .trade-token {
+            text-align: right;
+        }
+
+        .token-name {
+            font-weight: 600;
+        }
+
+        .token-price {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .trade-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        .time-link, .tx-link {
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity var(--transition-fast);
+        }
+
+        .time-link:hover, .tx-link:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                margin-top: var(--spacing-md);
+            }
+
+            .section-header {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+
+            .filters {
+                width: 100%;
+                overflow-x: auto;
+                padding: var(--spacing-sm);
+            }
+        }
+    </style>
+</body>
+</html>

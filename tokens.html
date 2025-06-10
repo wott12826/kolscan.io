@@ -1,0 +1,256 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="_next/static/css/fomo-theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Top Tokens - Kolscan</title>
+    <meta name="description" content="Discover trending memecoins and track their performance in real-time.">
+</head>
+
+<body>
+    <div class="layoutContainer">
+        <header class="header glass-effect">
+            <div class="header-content">
+                <a href="index.htm" class="logo">
+                    <span class="text-gradient" style="font-size: 24px; font-weight: 700;">Kolscan</span>
+                </a>
+                
+                <div class="price-container card">
+                    <img src="images/Solana.webp" alt="sol" width="20" height="20">
+                    <h2>$160.61</h2>
+                </div>
+
+                <nav class="nav-links">
+                    <a href="trades.html" class="nav-link">Trades</a>
+                    <a href="tokens.html" class="nav-link active">Tokens</a>
+                    <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                </nav>
+
+                <div class="header-actions">
+                    <button class="btn connect-wallet">
+                        Connect Wallet
+                    </button>
+                    <button class="btn settings-btn">
+                        <img src="images/Settings.webp" alt="Settings" width="24" height="24">
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="tokens-section">
+                <div class="section-header">
+                    <h1 class="section-title">Trending Tokens</h1>
+                    <div class="filters card">
+                        <button class="btn filter-btn active">All</button>
+                        <button class="btn filter-btn">New</button>
+                        <button class="btn filter-btn">Top Volume</button>
+                        <button class="btn filter-btn">Top Gainers</button>
+                    </div>
+                </div>
+
+                <div class="tokens-grid">
+                    <div class="token-card card">
+                        <div class="token-header">
+                            <img src="images/token-placeholder.png" alt="token" class="token-icon">
+                            <div class="token-info">
+                                <span class="token-name">Meme+</span>
+                                <span class="token-symbol">MEME+</span>
+                            </div>
+                        </div>
+                        <div class="token-stats">
+                            <div class="stat">
+                                <span class="stat-label">Price</span>
+                                <span class="stat-value">$0.000014</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">24h Change</span>
+                                <span class="stat-value positive">+45.2%</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Volume</span>
+                                <span class="stat-value">$2.5M</span>
+                            </div>
+                        </div>
+                        <div class="token-footer">
+                            <button class="btn trade-btn">Trade</button>
+                            <button class="btn chart-btn">Chart</button>
+                        </div>
+                    </div>
+                    <!-- More token cards... -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <style>
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: var(--spacing-md) var(--spacing-xl);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xl);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 100px auto 0;
+            padding: var(--spacing-xl);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .filters {
+            display: flex;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm);
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+        }
+
+        .filter-btn.active {
+            background: var(--fomo-primary);
+            border-color: var(--fomo-primary);
+        }
+
+        .tokens-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .token-card {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .token-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .token-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--border-radius-lg);
+        }
+
+        .token-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .token-name {
+            font-weight: 600;
+        }
+
+        .token-symbol {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .token-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-sm);
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .stat-value {
+            font-weight: 600;
+        }
+
+        .stat-value.positive {
+            color: var(--buy-color);
+        }
+
+        .stat-value.negative {
+            color: var(--sell-color);
+        }
+
+        .token-footer {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .trade-btn {
+            flex: 1;
+        }
+
+        .chart-btn {
+            flex: 1;
+            background: transparent;
+            border: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                margin-top: var(--spacing-md);
+            }
+
+            .section-header {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+
+            .filters {
+                width: 100%;
+                overflow-x: auto;
+                padding: var(--spacing-sm);
+            }
+        }
+    </style>
+</body>
+</html>

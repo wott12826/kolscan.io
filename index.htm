@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="_next/static/css/fomo-theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Kolscan - Track Top Memecoin Traders</title>
+    <meta name="description" content="Track the top memecoin traders in real-time. Never miss a trade again.">
+</head>
+
+<body>
+    <div class="layoutContainer">
+        <header class="header glass-effect">
+            <div class="header-content">
+                <a href="index.htm" class="logo">
+                    <span class="text-gradient" style="font-size: 24px; font-weight: 700;">Kolscan</span>
+                </a>
+                
+                <div class="price-container card">
+                    <img src="images/Solana.webp" alt="sol" width="20" height="20">
+                    <h2>$160.61</h2>
+                </div>
+
+                <nav class="nav-links">
+                    <a href="trades.html" class="nav-link">Trades</a>
+                    <a href="tokens.html" class="nav-link">Tokens</a>
+                    <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                </nav>
+
+                <div class="header-actions">
+                    <button class="btn connect-wallet">
+                        Connect Wallet
+                    </button>
+                    <button class="btn settings-btn">
+                        <img src="images/Settings.webp" alt="Settings" width="24" height="24">
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="hero">
+                <h1 class="hero-title">
+                    Track the Top Memecoin <br>
+                    Traders in <span class="text-gradient pulse">Realtime</span>
+                </h1>
+                
+                <div class="search-container">
+                    <div class="search-wrapper card">
+                        <input type="text" class="input search-input" placeholder="Enter wallet address">
+                        <button class="btn search-btn">
+                            <img src="images/Search2.webp" alt="search" width="24" height="24">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="live-trades">
+                    <h2 class="section-title">Live Trades</h2>
+                    <div class="trades-list">
+                        <div class="trade-card card">
+                            <div class="trade-header">
+                                <img src="profiles/3h65MmPZksoKKyEpEjnWU2Yk2iYT5oZDNitGy5cTaxoE.png" alt="trader" class="trader-avatar">
+                                <span class="trader-name">Jidn</span>
+                            </div>
+                            <div class="trade-details">
+                                <span class="trade-action buy">bought</span>
+                                <span class="trade-amount">0.069 sol (806k)</span>
+                                <span class="trade-token">Meme+</span>
+                                <span class="trade-price">$0.000014</span>
+                            </div>
+                            <div class="trade-time">
+                                <a href="#" class="time-link">5s ago</a>
+                            </div>
+                        </div>
+                        <!-- More trade cards... -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <style>
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: var(--spacing-md) var(--spacing-xl);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xl);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 100px auto 0;
+            padding: var(--spacing-xl);
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .hero-title {
+            font-size: 48px;
+            line-height: 1.2;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-wrapper {
+            display: flex;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm);
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .trades-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-xl);
+        }
+
+        .trade-card {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .trader-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .trade-action.buy {
+            color: var(--buy-color);
+        }
+
+        .trade-action.sell {
+            color: var(--sell-color);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                margin-top: var(--spacing-md);
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+        }
+    </style>
+</body>
+
+</html>

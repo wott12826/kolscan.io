@@ -331,14 +331,25 @@
             return parseFloat(amount).toFixed(2);
         }
 
+        // Add signature tracking
+        const renderedSignatures = new Set();
+
+        function sanitizePrefix(value) {
+            if (value.startsWith('+') || value.startsWith('-')) {
+                return value.slice(1);
+            }
+            return value;
+        }
+
         function createTradeRow(trade) {
             const row = document.createElement('div');
             row.className = 'trade-row new-trade';
             
             // Ensure consistent buy/sell display
-            const isBuy = trade.amountClass === 'buy';
+            const isBuy = trade.type === 'buy';
             const amountClass = isBuy ? 'buy' : 'sell';
             const amountPrefix = isBuy ? '+' : '-';
+            const amountValue = formatSolAmount(trade.amount);
             
             row.innerHTML = `
                 <div class="wallet-address">
@@ -346,7 +357,7 @@
                     <span>${trade.wallet || 'Unknown'}</span>
                 </div>
                 <div class="trade-amount ${amountClass}">
-                    ${amountPrefix}${formatSolAmount(trade.amount || 0)} SOL
+                    ${amountPrefix}${sanitizePrefix(amountValue)} SOL
                 </div>
                 <div class="token-info">
                     <img src="${trade.tokenIcon || ''}" alt="${trade.tokenSymbol || 'Unknown'}" class="token-icon" onerror="this.style.display='none'">
@@ -399,24 +410,20 @@
             const priceChange = (Math.random() * 10 - 5).toFixed(2);
             
             // Determine if it's a buy or sell based on price change
-            const isBuy = parseFloat(priceChange) >= 0;
-            const amountClass = isBuy ? 'buy' : 'sell';
-            const amountPrefix = isBuy ? '+' : '-';
-            const priceChangeClass = isBuy ? 'buy' : 'sell';
+            const type = parseFloat(priceChange) >= 0 ? 'buy' : 'sell';
             const timestamp = Math.floor(Date.now() / 1000);
+            const signature = Math.random().toString(36).substring(7);
 
             return {
                 wallet,
                 amount: parseFloat(amount),
-                amountClass,
-                amountPrefix,
+                type,
                 tokenSymbol: token.symbol,
                 tokenIcon: token.icon,
                 price: parseFloat(price),
                 priceChange: `${priceChange}%`,
-                priceChangeClass,
                 timestamp,
-                signature: Math.random().toString(36).substring(7),
+                signature,
                 dex
             };
         }
@@ -429,41 +436,22 @@
                     // Generate new trade
                     const newTrade = generateRandomTrade();
                     
-                    // Get existing trades and fix any double signs
-                    const existingTrades = Array.from(tradesList.children).map(row => {
-                        const amountText = row.querySelector('.trade-amount').textContent;
-                        // Fix double signs by keeping only the first sign
-                        const cleanAmount = amountText.replace(/^(\+|\-)(\+|\-)/, '$1');
-                        const isBuy = cleanAmount.startsWith('+');
-                        
-                        const tradeData = {
-                            wallet: row.querySelector('.wallet-address span').textContent,
-                            amount: parseFloat(cleanAmount.replace(/[^0-9.-]+/g, '')),
-                            amountClass: isBuy ? 'buy' : 'sell',
-                            amountPrefix: isBuy ? '+' : '-',
-                            tokenSymbol: row.querySelector('.token-info span').textContent,
-                            tokenIcon: row.querySelector('.token-info img').src,
-                            price: parseFloat(row.querySelector('.token-info').nextElementSibling.textContent.replace(/[^0-9.-]+/g, '')),
-                            priceChange: row.querySelector('.price-change').textContent,
-                            priceChangeClass: isBuy ? 'buy' : 'sell',
-                            timestamp: parseInt(row.dataset.timestamp),
-                            dex: row.querySelector('.dex-label').textContent
-                        };
-                        return tradeData;
-                    });
+                    // Check if we already have this trade
+                    if (renderedSignatures.has(newTrade.signature)) {
+                        return;
+                    }
 
-                    // Add new trade
-                    existingTrades.unshift(newTrade);
+                    // Create and add new trade row
+                    const row = createTradeRow(newTrade);
+                    tradesList.prepend(row);
 
-                    // Keep only the latest trades
-                    const trades = existingTrades.slice(0, SIMULATION_CONFIG.maxTrades);
+                    // Add signature to tracking set
+                    renderedSignatures.add(newTrade.signature);
 
-                    // Update display
-                    tradesList.innerHTML = '';
-                    for (const trade of trades) {
-                        const row = createTradeRow(trade);
-                        row.dataset.timestamp = trade.timestamp;
-                        tradesList.appendChild(row);
+                    // Keep only last 200 signatures
+                    if (renderedSignatures.size > 200) {
+                        const first = renderedSignatures.values().next().value;
+                        renderedSignatures.delete(first);
                     }
 
                     // Remove animation class after animation completes

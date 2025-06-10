@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="images/fomologo.png">
+    <link rel="icon" type="image/png" href="fav.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -276,89 +276,126 @@
                     <div>Price</div>
                     <div>Time</div>
                 </div>
-
-                <div class="trade-row new-trade">
-                    <div class="wallet-address">
-                        <div class="wallet-icon"></div>
-                        <span>0xAb...3eF</span>
-                    </div>
-                    <div class="trade-amount buy">+0.069 SOL</div>
-                    <div class="token-info">
-                        <img src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png" alt="SOL" class="token-icon">
-                        <span>SOL</span>
-                    </div>
-                    <div>$160.61</div>
-                    <div class="trade-time">3m ago</div>
-                </div>
-
-                <div class="trade-row">
-                    <div class="wallet-address">
-                        <div class="wallet-icon"></div>
-                        <span>0xCd...7gH</span>
-                    </div>
-                    <div class="trade-amount sell">-1.5 SOL</div>
-                    <div class="token-info">
-                        <img src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v/logo.png" alt="USDC" class="token-icon">
-                        <span>USDC</span>
-                    </div>
-                    <div>$1.00</div>
-                    <div class="trade-time">5m ago</div>
-                </div>
-
-                <div class="trade-row">
-                    <div class="wallet-address">
-                        <div class="wallet-icon"></div>
-                        <span>0xEf...9iK</span>
-                    </div>
-                    <div class="trade-amount buy">+2.3 SOL</div>
-                    <div class="token-info">
-                        <img src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.png" alt="USDT" class="token-icon">
-                        <span>USDT</span>
-                    </div>
-                    <div>$1.00</div>
-                    <div class="trade-time">8m ago</div>
+                <div id="trades-list">
+                    <!-- Trades will be dynamically inserted here -->
                 </div>
             </div>
         </main>
     </div>
 
     <script>
-        // Simulate new trades
-        function addNewTrade() {
-            const tradesContainer = document.querySelector('.trades-container');
-            const newTrade = document.createElement('div');
-            newTrade.className = 'trade-row new-trade';
-            newTrade.innerHTML = `
-                <div class="wallet-address">
-                    <div class="wallet-icon"></div>
-                    <span>0x${Math.random().toString(16).slice(2, 6)}...${Math.random().toString(16).slice(2, 6)}</span>
-                </div>
-                <div class="trade-amount ${Math.random() > 0.5 ? 'buy' : 'sell'}">${Math.random() > 0.5 ? '+' : '-'}${(Math.random() * 5).toFixed(2)} SOL</div>
-                <div class="token-info">
-                    <img src="https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png" alt="SOL" class="token-icon">
-                    <span>SOL</span>
-                </div>
-                <div>$${(Math.random() * 200).toFixed(2)}</div>
-                <div class="trade-time">just now</div>
-            `;
-            tradesContainer.insertBefore(newTrade, tradesContainer.children[1]);
+        // Function to format time ago
+        function timeAgo(timestamp) {
+            const seconds = Math.floor((new Date() - new Date(timestamp * 1000)) / 1000);
             
-            // Remove animation class after animation ends
-            setTimeout(() => {
-                newTrade.classList.remove('new-trade');
-            }, 500);
+            let interval = Math.floor(seconds / 31536000);
+            if (interval > 1) return interval + "y ago";
+            if (interval === 1) return "1y ago";
+            
+            interval = Math.floor(seconds / 2592000);
+            if (interval > 1) return interval + "mo ago";
+            if (interval === 1) return "1mo ago";
+            
+            interval = Math.floor(seconds / 86400);
+            if (interval > 1) return interval + "d ago";
+            if (interval === 1) return "1d ago";
+            
+            interval = Math.floor(seconds / 3600);
+            if (interval > 1) return interval + "h ago";
+            if (interval === 1) return "1h ago";
+            
+            interval = Math.floor(seconds / 60);
+            if (interval > 1) return interval + "m ago";
+            if (interval === 1) return "1m ago";
+            
+            return Math.floor(seconds) + "s ago";
         }
 
-        // Add new trade every 5 seconds
-        setInterval(addNewTrade, 5000);
+        // Function to format SOL amount
+        function formatSolAmount(amount) {
+            return (amount / 1e9).toFixed(4);
+        }
 
-        // Add click handler to open Solscan
-        document.querySelectorAll('.trade-row').forEach(row => {
+        // Function to create trade row
+        function createTradeRow(trade) {
+            const row = document.createElement('div');
+            row.className = 'trade-row new-trade';
+            
+            // Determine if it's a buy or sell based on the transaction type
+            const isBuy = trade.type === 'buy';
+            const amountClass = isBuy ? 'buy' : 'sell';
+            const amountPrefix = isBuy ? '+' : '-';
+            
+            row.innerHTML = `
+                <div class="wallet-address">
+                    <div class="wallet-icon"></div>
+                    <span>${trade.wallet.slice(0, 4)}...${trade.wallet.slice(-4)}</span>
+                </div>
+                <div class="trade-amount ${amountClass}">
+                    ${amountPrefix}${formatSolAmount(trade.amount)} SOL
+                </div>
+                <div class="token-info">
+                    <img src="${trade.tokenIcon || 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png'}" 
+                         alt="${trade.tokenSymbol || 'SOL'}" 
+                         class="token-icon">
+                    <span>${trade.tokenSymbol || 'SOL'}</span>
+                </div>
+                <div>$${trade.price ? trade.price.toFixed(2) : 'N/A'}</div>
+                <div class="trade-time">${timeAgo(trade.timestamp)}</div>
+            `;
+
+            // Add click handler to open transaction in Solscan
             row.addEventListener('click', () => {
-                const txId = 'your-transaction-id'; // Replace with actual transaction ID
-                window.open(`https://solscan.io/tx/${txId}`, '_blank');
+                window.open(`https://solscan.io/tx/${trade.signature}`, '_blank');
             });
-        });
+
+            return row;
+        }
+
+        // Function to fetch recent transactions
+        async function fetchRecentTrades() {
+            try {
+                const response = await fetch('http://localhost:3002/api/solscan/transaction/last?limit=20');
+                if (!response.ok) throw new Error('Failed to fetch trades');
+                
+                const trades = await response.json();
+                const tradesList = document.getElementById('trades-list');
+                
+                // Clear existing trades
+                tradesList.innerHTML = '';
+                
+                // Add new trades
+                trades.forEach(trade => {
+                    const row = createTradeRow({
+                        wallet: trade.signer[0],
+                        amount: trade.fee,
+                        type: 'buy', // You might want to determine this based on the transaction data
+                        tokenSymbol: 'SOL',
+                        price: 0, // You might want to fetch current SOL price
+                        timestamp: trade.blockTime,
+                        signature: trade.signature
+                    });
+                    
+                    tradesList.appendChild(row);
+                });
+
+                // Remove animation class after animation ends
+                setTimeout(() => {
+                    document.querySelectorAll('.new-trade').forEach(row => {
+                        row.classList.remove('new-trade');
+                    });
+                }, 500);
+
+            } catch (error) {
+                console.error('Error fetching trades:', error);
+            }
+        }
+
+        // Initial fetch
+        fetchRecentTrades();
+
+        // Refresh every 10 seconds
+        setInterval(fetchRecentTrades, 10000);
     </script>
 </body>
 

@@ -399,8 +399,8 @@
 
                 <div class="search-container">
                     <div class="search-wrapper">
-                        <input type="text" class="search-input" placeholder="Enter wallet address">
-                        <button class="btn search-btn">
+                        <input type="text" class="search-input" placeholder="Enter wallet address" id="wallet-search">
+                        <button class="btn search-btn" onclick="searchWallet()">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
@@ -509,8 +509,7 @@
         <footer class="footer">
             <p>© 2025 Fomo. All rights reserved.</p>
             <div class="footer-links">
-                <a href="#">Privacy</a>
-                <a href="#">Terms</a>
+                
             </div>
         </footer>
     </div>
@@ -609,6 +608,21 @@
         setInterval(() => {
             updateLatestTrade();
         }, 1000);
+
+        // Add wallet search functionality
+        function searchWallet() {
+            const walletAddress = document.getElementById('wallet-search').value.trim();
+            if (walletAddress) {
+                window.open(`https://solscan.io/tx/${walletAddress}`, '_blank');
+            }
+        }
+
+        // Add enter key support
+        document.getElementById('wallet-search').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchWallet();
+            }
+        });
     </script>
 </body>
 

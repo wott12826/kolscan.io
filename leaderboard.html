@@ -12,9 +12,12 @@
     <meta name="description" content="View the top traders on Solana based on their performance.">
     <style>
         :root {
-            --primary: #4D00FF;
+            --primary: #0066CC;
+            --primary-light: #1E88E5;
+            --primary-dark: #004BA0;
+            --primary-lighter: #42A5F5;
             --white: #FFFFFF;
-            --success: #00FF88;
+            --success: var(--primary-light);
             --danger: #FF4444;
             --warning: #FFC107;
             --spacing-xs: 0.5rem;
@@ -114,9 +117,9 @@
 
         .btn:hover {
             transform: scale(1.05);
-            background: var(--primary);
+            background: var(--primary-light);
             color: var(--white);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(30, 136, 229, 0.2);
         }
 
         .btn-secondary {
@@ -177,7 +180,7 @@
         }
 
         .leaderboard-row:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(30, 136, 229, 0.08);
             transform: translateX(5px);
         }
 

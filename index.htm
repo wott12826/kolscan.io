@@ -12,7 +12,10 @@
     <meta name="description" content="Track the top memecoin traders in real-time. Never miss a trade again.">
     <style>
         :root {
-            --primary: #4D00FF;
+            --primary: #0066CC;
+            --primary-light: #1E88E5;
+            --primary-dark: #004BA0;
+            --primary-lighter: #42A5F5;
             --white: #FFFFFF;
             --bg-dark: #0A0A0A;
             --spacing-xs: 0.5rem;
@@ -58,7 +61,7 @@
 
         .btn:hover {
             transform: scale(1.05);
-            background: var(--primary);
+            background: var(--primary-light);
             color: var(--white);
         }
 
@@ -212,7 +215,8 @@
 
         .trade-card:hover {
             transform: scale(1.02);
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(30, 136, 229, 0.15);
+            border-color: rgba(30, 136, 229, 0.3);
         }
 
         .trade-card.new-trade {
@@ -222,11 +226,11 @@
         @keyframes pulse {
             0% {
                 transform: scale(1);
-                background: rgba(255, 255, 255, 0.2);
+                background: rgba(30, 136, 229, 0.2);
             }
             50% {
                 transform: scale(1.02);
-                background: rgba(255, 255, 255, 0.3);
+                background: rgba(30, 136, 229, 0.3);
             }
             100% {
                 transform: scale(1);
@@ -369,8 +373,8 @@
         }
 
         .connect-wallet.connected {
-            background: #00FF88;
-            color: #222;
+            background: var(--primary-light);
+            color: var(--white);
             cursor: pointer;
             opacity: 0.85;
         }

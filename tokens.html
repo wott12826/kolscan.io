@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <title>Fomo - Trending Tokens</title>
+    <title>Xitadel - Trending Tokens</title>
     <meta name="description" content="Track trending tokens and their performance in real-time.">
     <style>
         :root {
@@ -336,7 +336,7 @@
         <header class="header glass-effect">
             <div class="header-content">
                 <a href="index.htm" class="logo">
-                    <img src="images/fomologo.png" alt="Fomo Logo" style="height: 32px; width: auto;">
+                    <img src="images/xitadel_logo.png" alt="Xitadel Logo" style="height: 32px; width: auto;">
                 </a>
                 
                 <nav class="nav-links">
@@ -443,7 +443,7 @@
                 Access Restricted
             </div>
             <div class="access-desc">
-                Must hold at least <span class="highlight">1,000,000 $FOMO</span> tokens to access this page.
+                Must hold at least <span class="highlight">1,000,000 $XITADEL</span> tokens to access this page.
             </div>
             <div class="access-ca">
                 CA: <span class="ca-address">qZNiALxuoDzBYA5UYFH5QuPFwFJF1NVQtd17o4wpump</span>
@@ -452,9 +452,9 @@
     </div>
 
     <script>
-    const FOMO_MINT = 'FOMO_MINT_ADDRESS'; // <-- замените на реальный mint $FOMO
-    const FOMO_DECIMALS = 9; // Обычно 9, проверьте для вашего токена
-    const FOMO_REQUIRED = 1_000_000;
+    const XITADEL_MINT = 'XITADEL_MINT_ADDRESS'; // <-- замените на реальный mint $XITADEL
+    const XITADEL_DECIMALS = 9; // Обычно 9, проверьте для вашего токена
+    const XITADEL_REQUIRED = 1_000_000;
 
     async function connectPhantomWallet() {
         if (!window.solana || !window.solana.isPhantom) {
@@ -467,7 +467,7 @@
             const pubkey = resp.publicKey.toString();
             localStorage.setItem('phantomWallet', pubkey);
             updateWalletButton(pubkey);
-            checkFomoAccess(pubkey);
+            checkXitadelAccess(pubkey);
         } catch (err) {
             console.log('Wallet connection cancelled', err);
         }
@@ -499,7 +499,7 @@
         if (modal) modal.style.display = 'flex';
     }
 
-    async function checkFomoAccess(pubkey) {
+    async function checkXitadelAccess(pubkey) {
         try {
             const url = 'https://api.mainnet-beta.solana.com';
             const body = {
@@ -508,7 +508,7 @@
                 method: 'getTokenAccountsByOwner',
                 params: [
                     pubkey,
-                    { mint: FOMO_MINT },
+                    { mint: XITADEL_MINT },
                     { encoding: 'jsonParsed' }
                 ]
             };
@@ -520,9 +520,9 @@
             const data = await res.json();
             let balance = 0;
             if (data.result.value.length > 0) {
-                balance = parseInt(data.result.value[0].account.data.parsed.info.tokenAmount.amount, 10) / (10 ** FOMO_DECIMALS);
+                balance = parseInt(data.result.value[0].account.data.parsed.info.tokenAmount.amount, 10) / (10 ** XITADEL_DECIMALS);
             }
-            if (balance >= FOMO_REQUIRED) {
+            if (balance >= XITADEL_REQUIRED) {
                 document.querySelector('.access-modal').style.display = 'none';
             } else {
                 document.querySelector('.access-modal').style.display = 'flex';
@@ -540,7 +540,7 @@
         const pubkey = localStorage.getItem('phantomWallet');
         if (pubkey) {
             updateWalletButton(pubkey);
-            checkFomoAccess(pubkey);
+            checkXitadelAccess(pubkey);
         }
     });
     </script>

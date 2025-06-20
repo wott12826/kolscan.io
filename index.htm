@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="images/fav.png">
-    <title>Fomo - Track Top Memecoin Traders</title>
+    <title>Xitadel - Track Top Memecoin Traders</title>
     <meta name="description" content="Track the top memecoin traders in real-time. Never miss a trade again.">
     <style>
         :root {
@@ -387,7 +387,7 @@
         <header class="header glass-effect">
             <div class="header-content">
                 <a href="index.htm" class="logo">
-                    <img src="images/fomologo.png" alt="Fomo Logo" style="height: 32px; width: auto;">
+                    <img src="images/xitadel_logo.png" alt="Xitadel Logo" style="height: 32px; width: auto;">
                 </a>
                 
                 <nav class="nav-links">
@@ -477,38 +477,38 @@
                 </div>
 
                 <div class="social-links">
-                    <a href="https://x.com/ScanFomo" class="btn">Follow us on X</a>
-                    <a href="https://t.me/ScanFomo" class="btn">Join the Telegram</a>
-                    <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=qZNiALxuoDzBYA5UYFH5QuPFwFJF1NVQtd17o4wpump" class="btn">Buy $FOMO</a>
+                    <a href="https://x.com/ScanXitadel" class="btn">Follow us on X</a>
+                    <a href="https://t.me/ScanXitadel" class="btn">Join the Telegram</a>
+                    <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=qZNiALxuoDzBYA5UYFH5QuPFwFJF1NVQtd17o4wpump" class="btn">Buy $XITADEL</a>
                 </div>
 
                 <div class="faq">
                     <h2 class="section-title">FAQ</h2>
                     <div class="faq-item">
                         <div class="faq-question">
-                            What is Fomo?
+                            What is Xitadel?
                             <span class="toggle">+</span>
                         </div>
                         <div class="faq-answer">
-                            FOMO is a Solana wallet tracker that monitors the activities of top memecoin traders and KOLs. It provides realtime transactions, token PnL, and a leaderboard ranking their performance.
+                            XITADEL is a Solana wallet tracker that monitors the activities of top memecoin traders and KOLs. It provides realtime transactions, token PnL, and a leaderboard ranking their performance.
                         </div>
                     </div>
                     <div class="faq-item">
                         <div class="faq-question">
-                            Is Fomo free to use?
+                            Is Xitadel free to use?
                             <span class="toggle">+</span>
                         </div>
                         <div class="faq-answer">
-                            FOMO offers both free and premium features. While realtime trades are available for free, realtime token tracking is only available to wallets holding more than 100k FOMO tokens.
+                            XITADEL offers both free and premium features. While realtime trades are available for free, realtime token tracking is only available to wallets holding more than 100k XITADEL tokens.
                         </div>
                     </div>
                     <div class="faq-item">
                         <div class="faq-question">
-                            Can I track non-Fomo wallets?
+                            Can I track non-Xitadel wallets?
                             <span class="toggle">+</span>
                         </div>
                         <div class="faq-answer">
-                            Yes, you can search any wallet address on FOMO . However, its data is initially limited to the last 100 transactions unless you choose to load more.
+                            Yes, you can search any wallet address on XITADEL . However, its data is initially limited to the last 100 transactions unless you choose to load more.
                         </div>
                     </div>
                     <div class="faq-item">
@@ -517,7 +517,7 @@
                             <span class="toggle">+</span>
                         </div>
                         <div class="faq-answer">
-                            We are looking for the top trenchers! If you have $100k+ PnL in recent months, DM us your wallet for verification on X @TRY_FOMO.
+                            We are looking for the top trenchers! If you have $100k+ PnL in recent months, DM us your wallet for verification on X @TRY_XITADEL.
                         </div>
                     </div>
                 </div>
@@ -525,7 +525,7 @@
         </main>
 
         <footer class="footer">
-            <p>© 2025 Fomo. All rights reserved.</p>
+            <p>© 2025 Xitadel. All rights reserved.</p>
             <div class="footer-links">
                 
             </div>
@@ -653,7 +653,7 @@
                 const pubkey = resp.publicKey.toString();
                 localStorage.setItem('phantomWallet', pubkey);
                 updateWalletButton(pubkey);
-                if (typeof checkFomoAccess === 'function') checkFomoAccess(pubkey);
+                if (typeof checkXitadelAccess === 'function') checkXitadelAccess(pubkey);
             } catch (err) {
                 console.log('Wallet connection cancelled', err);
             }

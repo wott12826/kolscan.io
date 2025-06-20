@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <title>Fomo - Live Trades</title>
+    <title>Xitadel - Live Trades</title>
     <meta name="description" content="Track live trades from top wallets in real-time.">
     <style>
         :root {
@@ -292,7 +292,7 @@
         <header class="header glass-effect">
             <div class="header-content">
                 <a href="index.htm" class="logo">
-                    <img src="images/fomologo.png" alt="Fomo Logo" style="height: 32px; width: auto;">
+                    <img src="images/xitadel_logo.png" alt="Xitadel Logo" style="height: 32px; width: auto;">
                 </a>
                 <nav class="nav-links">
                     <a href="trades.html" class="nav-link">Trades</a>
@@ -597,7 +597,7 @@
                 const pubkey = resp.publicKey.toString();
                 localStorage.setItem('phantomWallet', pubkey);
                 updateWalletButton(pubkey);
-                if (typeof checkFomoAccess === 'function') checkFomoAccess(pubkey);
+                if (typeof checkXitadelAccess === 'function') checkXitadelAccess(pubkey);
             } catch (err) {
                 console.log('Wallet connection cancelled', err);
             }
